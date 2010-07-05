@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>LIVE @ Bignetwork</title>
+    <style type="text/css" media="screen">
+      <!--
+      html, body{
+        height: 100%;
+        width: 100%;
+      }
+      body{
+        background: #000;
+        color: #fff;
+        font-family: "Helvetica Neue", sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      a{
+        -webkit-transition-duration: 0.33s;
+        -webkit-transition-property: color, background;
+        color: #369;
+      }
+      a:hover{
+        background: #369;
+        color: #fff;
+      }
+      #wrapper{
+        height: 100%;
+        width: 100%;
+      }
+      #header{
+        background: darkred;
+        border-bottom: 2px solid #600;
+        color: #c33;
+        padding: 0.5em 1em;
+        min-height: 4%;
+      }
+      #header h1{
+        font-weight: 200;
+        letter-spacing: 1px;
+        margin: 0;
+        padding: 0;
+      }
+      #header h1 a{
+        color: #f99;
+        text-decoration: none;
+      }
+      #header #event_tag_chooser{
+        float: right;
+      }
+      #header #event_tag_chooser label{
+        font-size: 90%;
+        margin-right: 0.5em;
+      }
+      #header #event_tag_chooser input{
+        background: #933;
+        border: none;
+        border: 1px solid #955;
+        color: #c99;
+        font-size: 120%;
+        padding: 0.2em 0.3em;
+        width: 5em;
+      }
+      #blocks{
+        height: 96%;
+      }
+      .block{
+        display: block;
+        float: left;
+        padding: 1em;
+        padding-bottom: 0;
+        width: 23em;
+      }
+      .block h2{
+        border-bottom: 1px solid #333;
+        color: #999;
+        font-weight: 200;
+        margin: 0;
+        margin-bottom: 1em;
+        padding: 0;
+      }
+      #twitter{
+      }
+      #tweets{
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+      #tweets .tweet{
+        margin-bottom: 1.5em;
+      }
+      #tweets .tweet:first-child{
+        font-size: 200%;
+        margin-bottom: 0.8em;
+      }
+      #tweets .tweet .created_at{
+        color: #555;
+        display: block;
+        font-size: 75%;
+      }
+      #tweets .tweet .created_at a{
+        color: #555;
+      }
+      #flickr{
+      }
+      #flickr_images{
+        margin: 0;
+        padding: 0;
+        width: 100%;
+      }
+      #flickr_images li{
+        display: inline;
+        width: 100%;
+      }
+      #flickr_images li:first-child a{
+        width: 96%;
+      }
+      #flickr_images a{
+        background: #999;
+        display: inline-block;
+        list-style-type: none;
+        padding: 1%;
+        padding-bottom: 0.1%;
+        margin-bottom: 2%;
+        margin-right: 2%;
+        width: 20.5%;
+      }
+      #flickr_images a:hover{
+        background: #fff;
+      }
+      #flickr_images img{
+        width: 100%;
+      }
+      #youtube_videos{
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+      #youtube_videos li{
+        display: inline-block;
+        margin-bottom: 2%;
+        margin-right: 2%;
+        /*width: 30%;*/
+      }
+      -->
+    </style>
+  </head>
+  <body id="index" onload="">
+    <div id="wrapper">
+      <div id="header">
+        <form action="" id="event_tag_chooser" method="get" accept-charset="utf-8">
+          <label for="event_tag">Hämtar saker taggade med:</label>
+          <input type="text" name="event_tag" value="lanparty" id="event_tag">
+        </form>
+        <h1><a href="index.htm">LIVE.bignetwork.se</a></h1>
+      </div>
+      <div id="blocks">
+        <div id="flickr" class="block">
+          <h2>Flickr</h2>
+          <ul id="flickr_images">
+        
+          </ul>
+        </div>
+        <div id="twitter" class="block">
+          <h2>Twitter</h2>
+          <ul id="tweets">
+        
+          </ul>
+        </div>
+        <div id="checked_in" class="block">
+          <h2>Incheckade</h2>
+          <ul id="">
+            <li></li>
+          </ul>
+        </div>
+        <div id="news" class="block">
+          <h2>Nyheter</h2>
+          <ul id="newsitems">
+            <li><a href=""></a></li>
+          </ul>
+        </div>
+        <div id="music" class="block">
+          <h2>Musik</h2>
+          <ul id="">
+            <li><a href=""></a></li>
+          </ul>
+        </div>
+        <div id="youtube" class="block">
+          <h2>YouTube</h2>
+          <ul id="youtube_videos">
+            <li><a href="#">...</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <script src="ecsstender.js" type="text/javascript" charset="utf-8"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="jquery.query-2.1.7.js" type="text/javascript" charset="utf-8"></script>
+    <script src="jquery.jfeed.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" charset="utf-8">
+      <!--
+        
+        var defaultTag = "lanparty";
+        var flickrTag  = defaultTag;
+        var twitterTag = defaultTag;
+        var youTubeTag = defaultTag;
+        var flickrURL  = "";
+        var twitterURL = "";
+        var youTubeURL = "";
+        var refreshDelay = 60000;
+      
+        $(document).ready(function(){
+          if($.query.get("event_tag")){
+            // Set tags based on querystring:
+            flickrTag = $.query.get("event_tag");
+            twitterTag = $.query.get("event_tag");
+            youTubeTag = $.query.get("event_tag");
+            // Set the same as value for the form input field:
+            $("input#event_tag").val($.query.get("event_tag"));
+          }
+          flickrURL = "http://api.flickr.com/services/feeds/photos_public.gne?tags=" + flickrTag + "&tagmode=any&format=json&jsoncallback=?";
+          twitterURL = "http://search.twitter.com/search.json?q=#" + twitterTag + "&result_type=recent";
+          //twitterURL = "http://twitter.com/status/user_timeline/MPV3.json?&callback=?";
+          youTubeURL = "http://gdata.youtube.com/feeds/api/videos/-/" + youTubeTag + "?alt=json&max-results=10&format=5";
+          
+          fetchTweets();
+          fetchFlickrImages();
+          fetchYouTubeVideos();
+          
+          setInterval(fetchTweets, refreshDelay);
+          setInterval(fetchFlickrImages, refreshDelay);
+          setInterval(fetchYouTubeVideos, refreshDelay);
+          
+        });
+        
+        function fetchTweets(){
+          // Get tweets from Twitter and add them to the page:
+          $("#tweets").empty();
+          $.getJSON(twitterURL, function(data){
+            $.each(data.results, function(i, item){
+              if($.isArray(item)){
+                $("#tweets").append("<li class=\"tweet\">" + item.text + " <span class='created_at'>" + /*relative_time(item.created_at)*/ /*" via " + item.source +*/ "</span></li>");
+                console.log(item);
+              }
+            })
+          });
+        }
+        
+        function fetchFlickrImages(){
+          // Get images from Flickr and add them to the page:
+          $("#flickr_images").empty();
+          $.getJSON(flickrURL, function(data){
+            $.each(data.items, function(i,item){
+              if ( i >= 9 ){
+                return false;
+              }
+              else{
+                $("<img/>").attr("src", item.media.m).appendTo("#flickr_images")
+                .wrap("<li><a href='" + item.link + "' target=\"_blank\"></a></li>");
+              }
+            });
+          });
+        }
+        
+        function fetchYouTubeVideos(){
+          $("#youtube_videos").empty();
+          $.getJSON(youTubeURL, function(data){
+            $.each(data.feed.entry, function(i,item){
+              $("#youtube_videos").append("<li><a href=\"" + item.link[0].href + "\" title=\"" + item.title.$t + "\"><img src=\"" + item.media$group.media$thumbnail[3].url + "\" alt=\"" + item.title.$t + "\" width=\"120\" height=\"90\" /></a></li>");
+            })
+          });
+        }
+        
+        function fetchRssNews(){
+          $.getFeed({
+            url: 'rss.xml',
+            success: function(feed){
+              alert(feed.title);
+              //$.each(feed.items, function(i,item){
+              //  
+              //});
+            }
+          });
+        }
+        
+        String.prototype.linkify = function() {
+        		return this.replace(/[A-Za-z]+:\/\/[A-Za-z0-9-_]+\.[A-Za-z0-9-_:%&\?\/.=]+/, function(m) {
+            return m.link(m);
+          });
+         }; 
+         
+          function relative_time(time_value) {
+        	  var values = time_value.split(" ");
+        	  time_value = values[1] + " " + values[2] + ", " + values[5] + " " + values[3];
+        	  var parsed_date = Date.parse(time_value);
+        	  var relative_to = (arguments.length > 1) ? arguments[1] : new Date();
+        	  var delta = parseInt((relative_to.getTime() - parsed_date) / 1000);
+        	  delta = delta + (relative_to.getTimezoneOffset() * 60);
+
+        	  var r = '';
+        	  if (delta < 60) {
+        	    r = 'en minut sedan';
+        	  } else if(delta < 120) {
+        	    r = 'några minuter sedan';
+        	  } else if(delta < (45*60)) {
+        	    r = (parseInt(delta / 60)).toString() + ' minuter sedan';
+        	  } else if(delta < (90*60)) {
+        	    r = 'en timme sedan';
+        	  } else if(delta < (24*60*60)) {
+        	    r = '' + (parseInt(delta / 3600)).toString() + ' timmar sedan';
+        	  } else if(delta < (48*60*60)) {
+        	    r = '1 dag sedan';
+        	  } else {
+        	    r = (parseInt(delta / 86400)).toString() + ' dagar sedan';
+        	  }
+
+        	  return 'för ' + r;
+        }
+      -->
+    </script>
+  </body>
+</html>
